@@ -1,3 +1,4 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+customer:
+    path: /list
+    controller: App\Controller\CustomerController::list
+    methods: GET
