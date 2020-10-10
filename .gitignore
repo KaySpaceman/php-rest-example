@@ -8,3 +8,8 @@
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
+
+## Editor and OS specific
+.idea
+.vscode
+.DS_Store
