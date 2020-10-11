@@ -2,10 +2,11 @@
 
 namespace App\Document;
 
+use App\Repository\CustomerRepository;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 /**
- * @MongoDB\Document
+ * @MongoDB\Document(repositoryClass=CustomerRepository::class)
  */
 class Customer
 {
@@ -50,7 +51,7 @@ class Customer
     protected $ssn;
 
     /**
-     * @var @MongoDB\Field(type="int")
+     * @var @MongoDB\Field(type="float")
      */
     protected $accountBalance;
 
@@ -95,9 +96,9 @@ class Customer
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -175,19 +176,42 @@ class Customer
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getAccountBalance(): int
+    public function getAccountBalance(): float
     {
         return $this->accountBalance ?? 0;
     }
 
     /**
-     * @param int $accountBalance
+     * @param float $accountBalance
      */
-    public function setAccountBalance(int $accountBalance): void
+    public function setAccountBalance(float $accountBalance): void
     {
         $this->accountBalance = $accountBalance;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSalutation(): ?string
+    {
+        switch ($this->getGender()) :
+            case 'male':
+                return 'mr';
+            case 'female':
+                return 'ms';
+            default:
+                return null;
+        endswitch;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAccountIntBalance(): int
+    {
+        return (int) ($this->getAccountBalance() * 100);
     }
 }
 
