@@ -30,26 +30,35 @@ class CustomerRepository extends ServiceDocumentRepository
 
     /**
      * @param Customer $customer
+     * @return Customer
      * @throws MongoDBException
      */
-    public function save(Customer $customer): void
+    public function save(Customer $customer): Customer
     {
         $this->dm->persist($customer);
         $this->dm->flush();
+
+        return $customer;
     }
 
     /**
      * @param array $customers
+     * @return array
      * @throws MongoDBException
      */
-    public function saveMany(array $customers)
+    public function saveMany(array $customers): array
     {
+        $savedCustomers = [];
+
         foreach ($customers as $customer) {
             if ($customer instanceof Customer) {
                 $this->dm->persist($customer);
+                $savedCustomers[] = $customer;
             }
         }
 
         $this->dm->flush();
+
+        return $savedCustomers;
     }
 }

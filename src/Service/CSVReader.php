@@ -4,7 +4,6 @@ namespace App\Service;
 
 use Exception;
 use Symfony\Component\Filesystem\Filesystem;
-use function MongoDB\BSON\toJSON;
 
 class CSVReader
 {
