@@ -1,0 +1,2 @@
+"name","surname", "email", "address", "city", "gender", "soc_security_num", "balance"
+"Jane","Doe", "test+jane@gmail.com", "", "", "female", "555-111-222-000", "20.00"

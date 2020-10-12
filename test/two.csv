@@ -1,0 +1,2 @@
+"name","surname", "email", "address", "city", "gender", "soc_security_num", "balance"
+"","Doe”, "test+doe@gmail.com", "", "London", "male", "", "500"

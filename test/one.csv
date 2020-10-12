@@ -1,0 +1,3 @@
+"name","surname", "email", "address", "city", "gender", "soc_security_num", "balance"
+"John", "Doe", "test+john@gmail.com", "Street 123", "", "", "", "0"
+"Jane", "Doe", "invalid_email", "Street 999", "", "male", "", "100.00"
