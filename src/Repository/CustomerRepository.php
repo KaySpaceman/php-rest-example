@@ -61,4 +61,30 @@ class CustomerRepository extends ServiceDocumentRepository
 
         return $savedCustomers;
     }
+
+    /**
+     * @param Customer $customer
+     * @throws MongoDBException
+     */
+    public function delete(Customer $customer): void
+    {
+        $this->dm->remove($customer);
+        $this->dm->flush();
+    }
+
+    /**
+     * @param array $customers
+     * @throws MongoDBException
+     */
+    public function deleteMany(array $customers): void
+    {
+        foreach ($customers as $customer) {
+            if ($customer instanceof Customer) {
+                $this->dm->remove($customer);
+                $savedCustomers[] = $customer;
+            }
+        }
+
+        $this->dm->flush();
+    }
 }
