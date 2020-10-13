@@ -55,7 +55,7 @@ class ImportCSVCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Parses customer data CSV files and stores the dates in the database')
             ->setHelp(
@@ -70,7 +70,12 @@ class ImportCSVCommand extends Command
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     */
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $files = $input->getArgument('files');
         $readCount = 0;
@@ -87,19 +92,7 @@ class ImportCSVCommand extends Command
                 $rows = $this->reader->readFile($path);
                 $readCount += count($rows);
 
-                foreach ($rows as $row) {
-                    $customer = new Customer();
-
-                    foreach ($row as $key => $value) {
-                        $setter = 'set' . ucfirst(self::COLUMN_TO_PROPERTY_MAP[$key] ?? $key);
-
-                        if ($value !== '' && method_exists($customer, $setter)) {
-                            $customer->$setter($value);
-                        }
-                    }
-
-                    $newCustomers[] = $customer;
-                }
+                $newCustomers = array_merge($newCustomers, $this->hydrateCustomers($rows));
             } catch (Exception $e) {
                 $output->writeln(sprintf('Failed to parse file "%s" with error: %s', $path, $e->getMessage()));
             }
@@ -118,5 +111,30 @@ class ImportCSVCommand extends Command
         $output->writeln(sprintf('Red %d lines and created %d customers', $readCount, $createCount));
 
         return $createCount ? Command::SUCCESS : Command::FAILURE;
+    }
+
+    /**
+     * @param array $rows
+     * @return array
+     */
+    protected function hydrateCustomers(array $rows): array
+    {
+        $newCustomers = [];
+
+        foreach ($rows as $row) {
+            $customer = new Customer();
+
+            foreach ($row as $key => $value) {
+                $setter = 'set' . ucfirst(self::COLUMN_TO_PROPERTY_MAP[$key] ?? $key);
+
+                if ($value !== '' && method_exists($customer, $setter)) {
+                    $customer->$setter($value);
+                }
+            }
+
+            $newCustomers[] = $customer;
+        }
+
+        return $newCustomers;
     }
 }
