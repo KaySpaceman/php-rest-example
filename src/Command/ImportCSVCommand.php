@@ -19,7 +19,7 @@ class ImportCSVCommand extends Command
      * column => property.
      * Not the nicest solution, but this will do for now.
      */
-    protected const COLUMN_TO_PROPERTY_MAP = [
+    public const COLUMN_TO_PROPERTY_MAP = [
         'name' => 'firstName',
         'surname' => 'lastName',
         'email' => 'email',
@@ -117,7 +117,7 @@ class ImportCSVCommand extends Command
      * @param array $rows
      * @return array
      */
-    protected function hydrateCustomers(array $rows): array
+    public function hydrateCustomers(array $rows): array
     {
         $newCustomers = [];
 
